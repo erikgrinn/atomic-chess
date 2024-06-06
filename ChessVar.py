@@ -186,20 +186,26 @@ class ChessVar:
     def valid_move(self, piece, start, finish):
         """ checks if move is valid for piece according to piece-specific move-sets """
         columns = 'abcdefgh'
+        start_letter_idx = columns.find(start[0])
+        finish_letter_idx = columns.find(finish[0])
         type = piece.get_type()
+
         if type == 'pawn':
-            if piece.get_color() == 'white' and start[0] == finish[0]:
+            if piece.get_color() == 'white' and start[0] == finish[0] and finish not in self._board:
                 if int(start[1]) == 2:
                     if int(finish[1]) - int(start[1]) == (1 and 2):
                         return True
                 if int(finish[1]) - int(start[1]) == 1:
                     return True
-            elif piece.get_color() == 'black' and start[0] == finish[0]:
+            elif piece.get_color() == 'black' and start[0] == finish[0] and finish not in self._board:
                 if int(start[1]) == 7:
                     if abs(int(finish[1]) - int(start[1])) == (1 and 2):
                         return True
                 if int(start[1]) - int(finish[1]) == 1:
                     return True
+            elif (abs(start_letter_idx - finish_letter_idx) == 1) and (abs(int(start[1]) - int(finish[1])) == 1) \
+                    and finish in self._board:
+                return True
             return False
 
         if type == 'rook':
