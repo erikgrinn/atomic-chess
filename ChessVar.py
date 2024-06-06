@@ -235,24 +235,28 @@ class ChessVar:
         if type == 'bishop':
             start_letter_idx = columns.find(start[0])
             finish_letter_idx = columns.find(finish[0])
-            if abs(finish_letter_idx - start_letter_idx)/abs(int(start[1]) - int(finish[1])) == 1:
+            if abs(int(start[1]) - int(finish[1])) == 0:
+                return False
+            elif abs(finish_letter_idx - start_letter_idx)/abs(int(start[1]) - int(finish[1])) == 1:
                 return True
             return False
 
         if type == 'queen':
             start_letter_idx = columns.find(start[0])
             finish_letter_idx = columns.find(finish[0])
-            if abs(finish_letter_idx - start_letter_idx) / abs(int(start[1]) - int(finish[1])) == 1:
-                return True
             if piece.get_color() == 'white':
                 if start[0] == finish[0] and (1 <= int(finish[1]) - int(start[1]) <= 7):
                     return True
                 elif start[1] == finish[1] and (finish[0] in columns):
                     return True
+                elif abs(finish_letter_idx - start_letter_idx) / abs(int(start[1]) - int(finish[1])) == 1:
+                    return True
             elif piece.get_color() == 'black':
                 if start[0] == finish[0] and (1 <= int(start[1]) - int(finish[1]) <= 7):
                     return True
                 elif start[1] == finish[1] and (finish[0] in columns):
+                    return True
+                elif abs(finish_letter_idx - start_letter_idx) / abs(int(start[1]) - int(finish[1])) == 1:
                     return True
             return False
 
