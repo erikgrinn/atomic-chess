@@ -3,6 +3,8 @@
 # Date: 5/31/24
 # Description: Portfolio project - Atomic Chess
 
+#notes: current implementation of both kings captured/exploded not working
+
 class ChessPiece:
     """ class of chess piece defining type, position, and color """
     def __init__(self, type, position, color):
@@ -115,7 +117,28 @@ class ChessVar:
                 if piece.get_type() == 'king':
                     return False
 
-                self.explosion(finish)
+                area = self.explosion_area(finish)
+                king_count = 0
+                for pos in area:
+                    if pos in self._board:
+                        if self._board[pos].get_type() == 'king':
+                            king_count += 1
+                            if king_count == 2:
+                                return False
+
+                for pos in area:
+                    if pos in self._board:
+                        if self._board[pos].get_type() == 'king':
+                            if self._board[pos].get_color() == 'white':
+                                self.set_black_won()
+                            elif self._board[pos].get_color() == 'black':
+                                self.set_white_won()
+                            del self._board[pos]
+                        elif self._board[pos].get_type() != 'pawn':
+                            del self._board[pos]
+                        elif self._board[pos].get_type() == 'pawn' and pos == finish:
+                            del self._board[pos]
+
                 self._board[finish] = piece
                 piece.set_position(finish)
                 del self._board[start]
@@ -129,13 +152,12 @@ class ChessVar:
                 return True
         return False
 
-    def explosion(self, center):
+    def explosion_area(self, center):
         """ iterates over explosion area, deleting all but pawns. Changes game state if
         king involved """
         columns = 'abcdefgh'
         center_letter_idx = columns.find(center[0])
         area = []
-        king_count = 0
 
         if 0 <= center_letter_idx < 7:
             right_col = center_letter_idx + 1
@@ -161,27 +183,7 @@ class ChessVar:
             for col in [left_col, center_letter_idx, right_col]:
                 area.append(columns[col] + str(row))
 
-        for pos in area:
-            if pos in self._board:
-                if self._board[pos].get_type() == 'king':
-                    king_count += 1
-                    if king_count == 2:
-                        return False
-
-        for pos in area:
-            if pos in self._board:
-                if self._board[pos].get_type() == 'king':
-                    if self._board[pos].get_color() == 'white':
-                        self.set_black_won()
-                    elif self._board[pos].get_color() == 'black':
-                        self.set_white_won()
-                    del self._board[pos]
-                    return True
-                elif self._board[pos].get_type() != 'pawn':
-                    del self._board[pos]
-                elif self._board[pos].get_type() == 'pawn' and pos == center:
-                    del self._board[pos]
-        return True
+        return area
 
     def valid_move(self, piece, start, finish):
         """ checks if move is valid for piece according to piece-specific move-sets """
@@ -214,7 +216,7 @@ class ChessVar:
                     return True
                 elif start[1] == finish[1] and (finish[0] in columns):
                     return True
-            if piece.get_color() == 'black':
+            elif piece.get_color() == 'black':
                 if start[0] == finish[0] and (1 <= int(start[1]) - int(finish[1]) <= 7):
                     return True
                 elif start[1] == finish[1] and (finish[0] in columns):
@@ -270,7 +272,6 @@ class ChessVar:
             elif abs(finish_letter_idx - start_letter_idx) == 1 and \
                     abs(int(start[1]) - int(finish[1])) == 1:
                 return True
-
             return False
 
     def print_board(self):
