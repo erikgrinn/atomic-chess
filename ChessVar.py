@@ -3,7 +3,6 @@
 # Date: 5/31/24
 # Description: Portfolio project - Atomic Chess
 
-#notes: current implementation of both kings captured/exploded not working
 
 class ChessPiece:
     """ class of chess piece defining type, position, and color """
