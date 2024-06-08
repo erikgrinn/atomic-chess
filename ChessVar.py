@@ -108,12 +108,6 @@ class ChessVar:
             return False
 
         if self.valid_move(piece, start, finish):
-            if self._game_state == 'UNFINISHED':
-                if piece.get_color() == 'white':
-                    self._current_turn = 'black'
-                elif piece.get_color() == 'black':
-                    self._current_turn = 'white'
-
             if finish in self._board:
                 if self._board[finish].get_color() == piece.get_color():
                     return False
@@ -131,6 +125,16 @@ class ChessVar:
                             if king_count == 2:
                                 return False
 
+                if self._game_state == 'UNFINISHED':
+                    if piece.get_color() == 'white':
+                        self._current_turn = 'black'
+                    elif piece.get_color() == 'black':
+                        self._current_turn = 'white'
+
+                self._board[finish] = piece
+                piece.set_position(finish)
+                del self._board[start]
+
                 for pos in area:
                     if pos in self._board:
                         if self._board[pos].get_type() == 'king':
@@ -144,16 +148,19 @@ class ChessVar:
                         elif self._board[pos].get_type() == 'pawn' and pos == finish:
                             del self._board[pos]
 
-                self._board[finish] = piece
-                piece.set_position(finish)
-                del self._board[start]
-                del self._board[finish]
                 return True
 
             else:
                 self._board[finish] = piece
                 piece.set_position(finish)
                 del self._board[start]
+
+                if self._game_state == 'UNFINISHED':
+                    if piece.get_color() == 'white':
+                        self._current_turn = 'black'
+                    elif piece.get_color() == 'black':
+                        self._current_turn = 'white'
+
                 return True
         return False
 
