@@ -125,7 +125,6 @@ class ChessVar:
 
                 king_count = 0
                 for pos in area:
-                    print(pos)
                     if pos in self._board:
                         if self._board[pos].get_type() == 'king':
                             king_count += 1
