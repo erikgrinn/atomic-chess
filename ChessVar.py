@@ -207,15 +207,15 @@ class ChessVar:
         if type == 'pawn':
             if piece.get_color() == 'white' and start[0] == finish[0] and finish not in self._board:
                 if int(start[1]) == 2:
-                    if int(finish[1]) - int(start[1]) == (1 and 2):
+                    if int(finish[1]) - int(start[1]) in [1, 2]:  # changed from (1 and 2)
                         return True
-                if int(finish[1]) - int(start[1]) == 1:
+                elif int(finish[1]) - int(start[1]) == 1:  # changed to elif
                     return True
             elif piece.get_color() == 'black' and start[0] == finish[0] and finish not in self._board:
                 if int(start[1]) == 7:
-                    if abs(int(finish[1]) - int(start[1])) == (1 and 2):
+                    if abs(int(finish[1]) - int(start[1])) in [1, 2]:  # changed from (1 and 2)
                         return True
-                if int(start[1]) - int(finish[1]) == 1:
+                elif int(start[1]) - int(finish[1]) == 1:  # changed to elif
                     return True
             elif (abs(start_letter_idx - finish_letter_idx) == 1) and (abs(int(start[1]) - int(finish[1])) == 1) \
                     and finish in self._board:
@@ -294,3 +294,21 @@ class ChessVar:
         print(board_print)
         if self._game_state == 'UNFINISHED':
             print('Current turn:', self._current_turn, '\n')
+
+
+game = ChessVar()
+print(game.make_move('d2', 'd4'))  # output True
+print(game.make_move('g7', 'g5'))  # output True
+print(game.make_move('e1', 'd2'))
+print(game.make_move('e7', 'e5'))
+print(game.make_move('d2', 'd3'))
+print(game.make_move('e8', 'e7'))
+print(game.make_move('d3', 'e4'))
+print(game.make_move('e7', 'e6'))
+print(game.make_move('d1', 'd2'))
+print(game.make_move('g5', 'g4'))
+print(game.make_move('d2', 'g5'))
+print(game.make_move('g4', 'g3'))
+print(game.make_move('g5', 'e5'))
+game.print_board()
+print(game.get_game_state())  # output UNFINISHED
