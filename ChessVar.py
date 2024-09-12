@@ -118,12 +118,20 @@ class ChessVar:
                 area = self.explosion_area(finish)
 
                 king_count = 0
+                king = None
                 for pos in area:
                     if pos in self._board:
                         if self._board[pos].get_type() == 'king':
                             king_count += 1
+                            king = self._board[pos].get_color()
                             if king_count == 2:
                                 return False
+
+                if king:
+                    if king == 'white':
+                        self.set_black_won()
+                    elif king =='black':
+                        self.set_white_won()
 
                 if self._game_state == 'UNFINISHED':
                     if piece.get_color() == 'white':
@@ -310,5 +318,15 @@ print(game.make_move('g5', 'g4'))
 print(game.make_move('d2', 'g5'))
 print(game.make_move('g4', 'g3'))
 print(game.make_move('g5', 'e5'))
+print(game.make_move('g5', 'd8'))
+print(game.make_move('e6', 'f5'))
+print(game.make_move('f2', 'g3'))
+print(game.make_move('g8', 'f6'))
+print(game.make_move('e4', 'd5'))
+print(game.make_move('f6', 'd5'))
+
+
+
+
 game.print_board()
 print(game.get_game_state())  # output UNFINISHED
