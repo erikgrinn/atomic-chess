@@ -1,5 +1,67 @@
 # portfolio-project
 
+# Key Coding Concepts in ChessVar.py
+
+## Object-Oriented Programming (OOP)
+
+The `ChessVar.py` file heavily utilizes Object-Oriented Programming (OOP) principles. The main classes used are:
+
+### `ChessPiece` Class
+- **Attributes**: 
+  - `_type`: The type of the chess piece (e.g., pawn, knight).
+  - `_position`: The current position of the piece on the board.
+  - `_color`: The color of the piece (white or black).
+  - `_art`: The visual representation of the piece for printing.
+- **Methods**:
+  - `get_type()`: Returns the type of the piece.
+  - `get_position()`: Returns the position of the piece.
+  - `get_color()`: Returns the color of the piece.
+  - `get_art()`: Returns the visual representation of the piece.
+  - `set_position(position)`: Sets the piece to a new position.
+
+### `ChessVar` Class
+- **Attributes**:
+  - `_game_state`: The current state of the game (e.g., 'UNFINISHED', 'WHITE_WON', 'BLACK_WON').
+  - `_current_turn`: The player whose turn it is to move (white or black).
+  - `_board`: A dictionary representing the board with positions as keys and `ChessPiece` objects as values.
+- **Methods**:
+  - `__init__()`: Initializes the game state, current turn, and board.
+  - `start_board()`: Initializes the beginning state of the board with pieces in their starting positions.
+  - `get_game_state()`: Returns the current game state.
+  - `set_white_won()`: Sets the game state to 'WHITE_WON'.
+  - `set_black_won()`: Sets the game state to 'BLACK_WON'.
+  - `make_move(start, finish)`: Moves a piece from the start position to the finish position, handles captures and explosions, and updates the game state.
+  - `explosion_area(center)`: Determines the area affected by an explosion when a piece is captured.
+  - `valid_move(piece, start, finish)`: Checks if a move is valid for a given piece.
+  - `print_board()`: Prints the current state of the board to the output terminal.
+
+## Encapsulation
+
+All data members of the classes are private, ensuring that they can only be accessed and modified through the class methods. This is a key principle of encapsulation in OOP.
+
+## Inheritance and Polymorphism
+
+While the current implementation does not explicitly use inheritance and polymorphism, the design of the `ChessPiece` class allows for easy extension. For example, specific piece types (e.g., `Pawn`, `Knight`) could inherit from `ChessPiece` and override methods to implement piece-specific behavior.
+
+## Control Flow
+
+The `make_move` method uses various control flow statements (`if`, `else`, `for`, `return`) to handle the logic of making a move, checking for valid moves, handling captures and explosions, and updating the game state.
+
+## Data Structures
+
+- **Dictionary**: The board is represented as a dictionary where keys are positions (e.g., 'a1', 'b2') and values are `ChessPiece` objects.
+- **Lists**: Lists are used to store columns, rows, pieces, and colors for initializing the board and determining explosion areas.
+
+## Error Handling
+
+The `make_move` method includes error handling to ensure that moves are valid and that the game state is updated correctly. If a move is invalid, the method returns `False`.
+
+## Printing and Visualization
+
+The `print_board` method provides a visual representation of the board's current state, which is helpful for debugging and testing.
+
+These key coding concepts are essential for understanding the implementation of the Atomic Chess variant in `ChessVar.py`.
+
 **Remember that this project cannot be submitted late.**
 
 Write a class named **ChessVar** for playing an abstract board game that is a variant of chess--atomic chess. The following explanation of the rules assumes some familiarity with the rules of chess - specifically how the pieces move and capture. If you have any questions about those rules, please don't hesitate to ask.
@@ -36,3 +98,5 @@ game.print_board()
 print(game.get_game_state())  # output UNFINISHED
 ```
 The file must be named: ChessVar.py
+
+
